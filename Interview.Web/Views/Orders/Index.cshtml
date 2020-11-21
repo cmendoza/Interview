@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Interview.BusinessLogic.Order 
+@{
+    var orderTotal = Model.OrderItems.Sum(x => x.Quantity * x.Price);
+}
+
+<h1>Order: @Model.Id</h1>
+
+<p>
+    Total: @Model.Total.ToString("C")
+    Customer ID: @Model.CustomerId
+    Created At: @Model.CreatedAt
+</p>
+
+@foreach (var item in Model.OrderItems)
+{
+    <p> @item.ProductId | @item.Product?.Name | @item.Quantity | @item.Price.ToString("C") </p>
+}
+
+<p>
+    Order Total: @orderTotal.ToString("C")
+</p>
