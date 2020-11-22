@@ -1,16 +1,13 @@
 ﻿namespace Interview.BusinessLogic.Common
 {
-    public abstract class Repository<T> where T : Entity
+    internal abstract class Repository<T> where T : Entity
     {
-        protected Repository(OrdersContext context)
-        {
-            Context = context;
-        }
+        protected Repository(UnitOfWork unitOfWork) => Context = unitOfWork;
 
-        protected OrdersContext Context { get; }
+        protected UnitOfWork Context { get; }
 
-        public T Get(long id) => Context.Find<T>(id);
+        public T Get(long id) => Context.Get<T>(id);
 
-        public void Add(T entity) => Context.Set<T>().Add(entity);
+        public void Add(T entity) => Context.Add(entity);
     }
 }

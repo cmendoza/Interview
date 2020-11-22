@@ -3,8 +3,8 @@ using Interview.BusinessLogic.Customers.Domain;
 
 namespace Interview.BusinessLogic.Customers.Infrastructure
 {
-    public class CustomerRepository : Repository<Customer>
+    internal sealed class CustomerRepository : Repository<Customer>
     {
-        public CustomerRepository(OrdersContext context) : base(context) { }
+        public CustomerRepository(UnitOfWork unitOfWork) : base(unitOfWork) { }
     }
 }
