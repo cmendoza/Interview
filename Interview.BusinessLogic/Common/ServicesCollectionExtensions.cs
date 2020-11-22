@@ -8,8 +8,9 @@ namespace Interview.BusinessLogic.Common
         public static IServiceCollection AddBusinessLogicDependencies(this IServiceCollection services)
         {
             services
-                .AddScoped<OrdersContext>()
-                .AddSingleton<CustomerRepository>();
+                .AddSingleton<ContextFactory>()
+                .AddScoped<UnitOfWork>()
+                .AddTransient<CustomerRepository>();
 
             return services;
         }
