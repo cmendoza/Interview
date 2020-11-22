@@ -1,16 +1,11 @@
+using Interview.Api.Utils;
+using Interview.BusinessLogic.Common;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Interview.Api
 {
@@ -28,10 +23,12 @@ namespace Interview.Api
         {
             services.AddControllers();
 
+            var defaultConnectionString = Configuration.GetConnectionString("default");
 
-
-            //services
-            //    .AddMediatR(typeof(BusinessLogic.Common.Entity).Assembly);
+            services
+                .AddMediatR(typeof(CommandsConnectionString).Assembly)
+                .AddSingleton(new CommandsConnectionString(defaultConnectionString))
+                .AddBusinessLogicDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +40,8 @@ namespace Interview.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionHandler>();
 
             app.UseRouting();
 
