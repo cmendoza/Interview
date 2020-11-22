@@ -9,13 +9,23 @@ namespace Interview.Api.Utils
     [ApiController]
     public class ApiControllerBase : ControllerBase
     {
-        public ApiControllerBase(MediatR.IMediator mediator)
+        private readonly IMediator _mediator;
+
+        public ApiControllerBase(IMediator mediator)
         {
-            Mediator = mediator;
+            _mediator = mediator;
         }
 
-        protected IMediator Mediator { get; }
+        protected new IActionResult Ok() => base.Ok(Envelope.Ok());
 
-        public Task<Result> DispatchAsync(IRequest<Result> request) => Mediator.Send(request);
+        protected IActionResult Ok<T>(T result) => base.Ok(Envelope.Ok(result));
+
+        protected IActionResult Error(string errorMessage) => StatusCode(400, Envelope.Error(errorMessage));
+
+        protected IActionResult NotFound(string errorMessage) => NotFound(Envelope.Error(errorMessage));
+
+        protected IActionResult FromResult(Result result) => result.IsSuccess ? Ok() : Error(result.Error);
+
+        public Task<Result> DispatchAsync(IRequest<Result> request) => _mediator.Send(request);
     }
 }
