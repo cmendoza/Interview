@@ -14,33 +14,29 @@ namespace Interview.BusinessLogic.Customers.Application
         }
 
         public string FirstName { get; }
-        public string LastName { get; }
+        public string LastName  { get; }
     }
 
     internal sealed class CreateCustomerCommandHandler : MediatR.RequestHandler<CreateCustomerCommand, Result>
     {
-        private readonly OrdersContext _context;
+        private readonly UnitOfWork _unitOfWork;
         private readonly CustomerRepository _repository;
 
-        public CreateCustomerCommandHandler(OrdersContext context, CustomerRepository repository)
+        public CreateCustomerCommandHandler(UnitOfWork unitOfWork, CustomerRepository repository)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _repository = repository;
         }
 
         protected override Result Handle(CreateCustomerCommand request)
         {
-            if (request.FirstName == null || string.IsNullOrWhiteSpace(request.FirstName))
-                return Result.Failure("First name is required.");
+            var customerResult = Customer.Create(request.FirstName, request.LastName);
 
-            if (request.LastName == null || string.IsNullOrWhiteSpace(request.LastName))
-                return Result.Failure("First name is required.");
+            if (customerResult.IsFailure) return customerResult;
 
-            var customer = new Customer(request.FirstName, request.LastName);
+            _repository.Add(customerResult.Value);
 
-            _repository.Add(customer);
-
-            _context.SaveChanges();
+            _unitOfWork.Commit();
 
             return Result.Success();
         }
