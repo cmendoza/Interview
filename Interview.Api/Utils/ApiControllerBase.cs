@@ -26,6 +26,6 @@ namespace Interview.Api.Utils
 
         protected IActionResult FromResult(Result result) => result.IsSuccess ? Ok() : Error(result.Error);
 
-        public Task<Result> DispatchAsync(IRequest<Result> request) => _mediator.Send(request);
+        protected Task<T> DispatchAsync<T>(IRequest<T> request) => _mediator.Send(request);
     }
 }
