@@ -23,7 +23,8 @@ namespace Interview.BusinessLogic.Orders.Infrastructure
 
             builder
                 .HasMany(x => x.OrderItems)
-                .WithOne()
+                .WithOne(x => x.Order)
+                .OnDelete(DeleteBehavior.Cascade)
                 .Metadata.PrincipalToDependent.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
 
@@ -39,10 +40,15 @@ namespace Interview.BusinessLogic.Orders.Infrastructure
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-
             builder.Property(e => e.Price).IsRequired();
+            builder.Property(e => e.Quantity).IsRequired();
 
-            builder.HasOne(d => d.Product)
+            builder
+                .HasOne(x => x.Order)
+                .WithMany(x => x.OrderItems);
+
+            builder
+                .HasOne(d => d.Product)
                 .WithMany(p => p.OrderItems)
                 .OnDelete(DeleteBehavior.NoAction);
         }

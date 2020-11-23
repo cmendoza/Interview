@@ -23,13 +23,23 @@ namespace Interview.BusinessLogic.Orders.Domain
 
         public virtual decimal  Total     { get; protected set; }
         public virtual DateTime CreatedAt { get; protected set; }
+        public virtual Customer Customer  { get; protected set; }
 
-        public virtual Customer Customer { get; protected set; }
         public virtual IReadOnlyCollection<OrderItem> OrderItems => _orderItems.ToList();
 
-        public void AddItem(Product product, int quantity)
+        public void AddOrUpdateItem(Product product, int quantity)
         {
-            _orderItems.Add(new OrderItem(product, quantity));
+            if (product is null) throw new ArgumentNullException(nameof(product));
+            // Using property due EF core limitation
+            var existingItem = OrderItems.FirstOrDefault(x => x.Product == product);
+            if (existingItem is null)
+            {
+                _orderItems.Add(new OrderItem(this, product, quantity));
+            }
+            else
+            {
+                existingItem.UpdateQuantity(quantity);
+            }
         }
     }
 }

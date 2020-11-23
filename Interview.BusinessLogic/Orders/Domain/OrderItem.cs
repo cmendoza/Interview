@@ -1,4 +1,5 @@
 ﻿using Interview.BusinessLogic.Products.Domain;
+using System;
 
 namespace Interview.BusinessLogic.Orders.Domain
 {
@@ -6,8 +7,9 @@ namespace Interview.BusinessLogic.Orders.Domain
     {
         protected OrderItem() { }
 
-        public OrderItem(Product product, int quantity)
+        public OrderItem(Order order, Product product, int quantity)
         {
+            Order = order;
             Product = product;
             Price = product.Price;
             Quantity = quantity;
@@ -17,5 +19,13 @@ namespace Interview.BusinessLogic.Orders.Domain
         public int     Quantity { get; protected set; }
 
         public virtual Product Product { get; protected set; }
+        public virtual Order   Order   { get; protected set; }
+
+        public void UpdateQuantity(int newQuantity)
+        {
+            if (newQuantity <= 0) throw new ArgumentException("Quantity must be greater than zero.");
+
+            Quantity = newQuantity;
+        }
     }
 }
