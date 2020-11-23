@@ -14,7 +14,7 @@ namespace Interview.BusinessLogic.Orders.Infrastructure
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.CreatedAt).IsRequired();
-            builder.Property(x => x.Total).IsRequired();
+            builder.Property(x => x.Total).HasPrecision(10, 2).IsRequired();
 
             builder
                 .HasOne(d => d.Customer)
@@ -40,8 +40,8 @@ namespace Interview.BusinessLogic.Orders.Infrastructure
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(e => e.Price).IsRequired();
-            builder.Property(e => e.Quantity).IsRequired();
+            builder.Property(x => x.Price).HasPrecision(10, 2).IsRequired();
+            builder.Property(x => x.Quantity).IsRequired();
 
             builder
                 .HasOne(x => x.Order)

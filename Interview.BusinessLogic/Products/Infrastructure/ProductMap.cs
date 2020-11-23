@@ -14,7 +14,7 @@ namespace Interview.BusinessLogic.Products.Infrastructure
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.Price).IsRequired();
+            builder.Property(x => x.Price).HasPrecision(10, 2).IsRequired();
 
             builder
                 .HasMany(x => x.OrderItems)
