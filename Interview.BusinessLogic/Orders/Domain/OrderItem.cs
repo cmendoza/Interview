@@ -15,8 +15,8 @@ namespace Interview.BusinessLogic.Orders.Domain
             Quantity = quantity;
         }
 
-        public decimal Price    { get; protected set; }
-        public int     Quantity { get; protected set; }
+        public virtual decimal Price    { get; protected set; }
+        public virtual int     Quantity { get; protected set; }
 
         public virtual Product Product { get; protected set; }
         public virtual Order   Order   { get; protected set; }
@@ -25,6 +25,7 @@ namespace Interview.BusinessLogic.Orders.Domain
         {
             if (newQuantity <= 0) throw new ArgumentException("Quantity must be greater than zero.");
 
+            Price = Product.Price; // Update to latest price
             Quantity = newQuantity;
         }
     }
