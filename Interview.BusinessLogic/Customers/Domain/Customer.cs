@@ -33,9 +33,9 @@ namespace Interview.BusinessLogic.Customers.Domain
 
         public void UpdateProfileInfo(string firstName, string lastName)
         {
-            if (string.IsNullOrWhiteSpace(firstName)) throw new ArgumentNullException("First name is required.");
+            if (string.IsNullOrWhiteSpace(firstName)) throw new ArgumentNullException(nameof(firstName));
 
-            if (string.IsNullOrWhiteSpace(lastName)) throw new ArgumentNullException("Last name is required.");
+            if (string.IsNullOrWhiteSpace(lastName)) throw new ArgumentNullException(nameof(lastName));
 
             FirstName = firstName;
             LastName = lastName;
