@@ -1,0 +1,52 @@
+﻿using Interview.BusinessLogic.Orders.Domain;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Interview.BusinessLogic.Orders.Infrastructure
+{
+    internal sealed class OrderMap : IEntityTypeConfiguration<Order>
+    {
+        public void Configure(EntityTypeBuilder<Order> builder)
+        {
+            builder.ToTable("Orders");
+
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.CreatedAt).IsRequired();
+            builder.Property(x => x.Total).IsRequired();
+
+            builder
+                .HasOne(d => d.Customer)
+                .WithMany(p => p.Orders)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder
+                .HasMany(x => x.OrderItems)
+                .WithOne()
+                .Metadata.PrincipalToDependent.SetPropertyAccessMode(PropertyAccessMode.Field);
+        }
+
+        public static OrderMap GetInstance() => new OrderMap();
+    }
+    
+    internal sealed class OrderItemMap : IEntityTypeConfiguration<OrderItem>
+    {
+        public void Configure(EntityTypeBuilder<OrderItem> builder)
+        {
+            builder.ToTable("OrderItems");
+
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
+            builder.Property(e => e.Price).IsRequired();
+
+            builder.HasOne(d => d.Product)
+                .WithMany(p => p.OrderItems)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
+
+        public static OrderItemMap GetInstance() => new OrderItemMap();
+    }
+}

@@ -19,7 +19,6 @@ namespace Interview.BusinessLogic.Products.Infrastructure
             builder
                 .HasMany(x => x.OrderItems)
                 .WithOne(x => x.Product)
-                .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 

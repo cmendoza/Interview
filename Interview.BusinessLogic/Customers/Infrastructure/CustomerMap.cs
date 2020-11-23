@@ -19,7 +19,6 @@ namespace Interview.BusinessLogic.Customers.Infrastructure
             builder
                 .HasMany(x => x.Orders)
                 .WithOne(x => x.Customer)
-                .HasForeignKey(x => x.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 

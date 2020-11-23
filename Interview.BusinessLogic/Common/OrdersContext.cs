@@ -22,6 +22,8 @@ namespace Interview.BusinessLogic.Common
         {
             modelBuilder.ApplyConfiguration(Customers.Infrastructure.CustomerMap.GetInstance());
             modelBuilder.ApplyConfiguration(Products.Infrastructure.ProductMap.GetInstance());
+            modelBuilder.ApplyConfiguration(Orders.Infrastructure.OrderMap.GetInstance());
+            modelBuilder.ApplyConfiguration(Orders.Infrastructure.OrderItemMap.GetInstance());
         }
 
     }
