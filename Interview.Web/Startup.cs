@@ -1,13 +1,9 @@
+using Interview.Web.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Interview.Web
 {
@@ -24,6 +20,10 @@ namespace Interview.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            var apiEndpoint = Configuration["ApiEndpoint"];
+
+            services.AddSingleton(new ApiEndpoint(apiEndpoint));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

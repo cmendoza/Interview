@@ -1,19 +1,28 @@
-﻿using Interview.BusinessLogic;
+﻿using Interview.Web.Models;
+using Interview.Web.Utils;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using RestSharp;
+using RestSharp.Serializers.NewtonsoftJson;
 
 namespace Interview.Web.Controllers
 {
     public class OrdersController : Controller
     {
+        private readonly ApiEndpoint _endpoint;
+
+        public OrdersController(ApiEndpoint endpoint)
+        {
+            _endpoint = endpoint;
+        }
+
         public IActionResult Index()
         {
-            var order = new Order();
+            var client = new RestClient(_endpoint.Value).UseNewtonsoftJson();
+            var request = new RestRequest("/orders/1");
 
-            return View(order);
+            var response = client.Get<Envelope<OrderDto>>(request);
+
+            return View(response.Data.Result);
         }
     }
 }
