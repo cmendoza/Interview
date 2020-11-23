@@ -19,7 +19,7 @@ namespace Interview.Api.Customers
 
             var result = await DispatchAsync(command);
 
-            return Ok(result);
+            return FromResult(result);
         }
     }
 }
