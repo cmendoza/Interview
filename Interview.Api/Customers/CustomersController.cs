@@ -21,5 +21,15 @@ namespace Interview.Api.Customers
 
             return FromResult(result);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(long id, [FromBody] UpdateCustomerRequest request)
+        {
+            var command = new UpdateCustomerCommand(id, request.FirstName, request.LastName);
+
+            var result = await DispatchAsync(command);
+
+            return FromResult(result);
+        }
     }
 }
