@@ -1,37 +1,35 @@
-﻿using Interview.BusinessLogic.Common;
+﻿using Interview.Api.Utils;
+using Interview.BusinessLogic.Orders.Application;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Interview.Api.Orders
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class OrdersController : ControllerBase
+    public class OrdersController : ApiControllerBase
     {
-        private const string ConnectionString = @"Server=LAPTOP-S3NFKIGO\SQLEXPRESS;Database=TestDb;Trusted_Connection=True;";
-
-        [HttpGet("{id}")]
-        public IActionResult Get(long id)
+        public OrdersController(IMediator mediator) : base(mediator)
         {
-            using (var context = new OrdersContext(ConnectionString))
-            {
-                var order = context.Orders.Find(id);
-
-                if (order == null) return NotFound();
-
-                return Ok(order);
-            }
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateOrderRequest request)
         {
-            using (var context = new OrdersContext(ConnectionString))
-            {
-                var orders = context.Orders.ToList();
+            var command = new CreateOrderCommand(request.CustomerId);
 
-                return Ok(orders);
-            }
+            var result = await DispatchAsync(command);
+
+            return FromResult(result);
+        }
+
+        [HttpPost("{id}")]
+        public async Task<IActionResult> AddItem(long id, [FromBody] UpdateOrderRequest request)
+        {
+            var command = new AddItemToCartCommand(id, request.ProductId, request.Quantity);
+
+            var result = await DispatchAsync(command);
+
+            return FromResult(result);
         }
     }
 }
