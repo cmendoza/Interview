@@ -1,4 +1,5 @@
 ﻿using Interview.BusinessLogic.Customers.Infrastructure;
+using Interview.BusinessLogic.Products.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Interview.BusinessLogic.Common
@@ -10,7 +11,8 @@ namespace Interview.BusinessLogic.Common
             services
                 .AddSingleton<ContextFactory>()
                 .AddScoped<UnitOfWork>()
-                .AddTransient<CustomerRepository>();
+                .AddTransient<CustomerRepository>()
+                .AddTransient<ProductRepository>();
 
             return services;
         }
