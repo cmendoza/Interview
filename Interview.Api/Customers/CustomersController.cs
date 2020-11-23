@@ -1,5 +1,6 @@
 ﻿using Interview.Api.Utils;
 using Interview.BusinessLogic.Customers.Application;
+using Interview.Queries.Customers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -30,6 +31,26 @@ namespace Interview.Api.Customers
             var result = await DispatchAsync(command);
 
             return FromResult(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var query = new AllCustomersQuery();
+
+            var result = await DispatchAsync(query);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(long id)
+        {
+            var query = new CustomerByIdQuery(id);
+
+            var result = await DispatchAsync(query);
+
+            return Ok(result);
         }
     }
 }
