@@ -40,6 +40,8 @@ namespace Interview.BusinessLogic.Orders.Domain
             {
                 existingItem.UpdateQuantity(quantity);
             }
+
+            Total = _orderItems.Sum(x => x.Price * x.Quantity);
         }
     }
 }
