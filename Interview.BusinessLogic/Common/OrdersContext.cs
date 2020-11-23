@@ -21,6 +21,7 @@ namespace Interview.BusinessLogic.Common
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(Customers.Infrastructure.CustomerMap.GetInstance());
+            modelBuilder.ApplyConfiguration(Products.Infrastructure.ProductMap.GetInstance());
         }
 
     }

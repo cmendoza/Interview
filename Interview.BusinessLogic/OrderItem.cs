@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interview.BusinessLogic.Products.Domain;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
