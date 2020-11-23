@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Interview.BusinessLogic\Interview.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Interview.Queries\Interview.Queries.csproj" />
   </ItemGroup>
 
 

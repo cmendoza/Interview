@@ -1,5 +1,6 @@
 using Interview.Api.Utils;
 using Interview.BusinessLogic.Common;
+using Interview.Queries.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,8 +27,9 @@ namespace Interview.Api
             var defaultConnectionString = Configuration.GetConnectionString("default");
 
             services
-                .AddMediatR(typeof(CommandsConnectionString).Assembly)
+                .AddMediatR(typeof(CommandsConnectionString).Assembly, typeof(QueriesConnectionString).Assembly)
                 .AddSingleton(new CommandsConnectionString(defaultConnectionString))
+                .AddSingleton(new QueriesConnectionString(defaultConnectionString))
                 .AddBusinessLogicDependencies();
         }
 
