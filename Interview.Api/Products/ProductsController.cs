@@ -1,5 +1,6 @@
 ﻿using Interview.Api.Utils;
 using Interview.BusinessLogic.Products.Application;
+using Interview.Queries.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -30,6 +31,26 @@ namespace Interview.Api.Products
             var result = await DispatchAsync(command);
 
             return FromResult(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var query = new AllProductsQuery();
+
+            var result = await DispatchAsync(query);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(long id)
+        {
+            var query = new ProductByIdQuery(id);
+
+            var result = await DispatchAsync(query);
+
+            return result != null ? Ok(result) : NotFound($"ProductId doesn't exist: {id}");
         }
     }
 }
